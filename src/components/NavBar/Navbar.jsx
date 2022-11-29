@@ -1,9 +1,14 @@
 import {Link} from "react-router-dom"
-function NavbarComponent() {  
+// ICONS
+import { FaOpencart } from "react-icons/fa";
+
+import './Navbar.css'
+function NavbarComponent() { 
+ 
 	return (
 		<>
 		<nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-  <div className="container-fluid">
+  <div className="container-fluid align-items-baseline  mx-5">
     <Link className="navbar-brand" to="/">React</Link>
     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span className="navbar-toggler-icon"></span>
@@ -11,10 +16,21 @@ function NavbarComponent() {
     <div className="collapse navbar-collapse" id="navbarSupportedContent">
       <ul className="navbar-nav me-auto mb-2 mb-lg-0">
         <li className="nav-item">
-          <Link className="nav-link active" aria-current="page" to="/">Home</Link>
+          <Link className="nav-link " to="/">Home</Link>
         </li>
         <li className="nav-item">
-          <Link className="nav-link" to="/product">Link</Link>
+          <Link className="nav-link cart-nav-link" to="/product">
+            <FaOpencart class="navbar-cart"/>
+            <span className="cart-number">3</span>
+          </Link>
+        </li>
+      </ul>
+      <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
+        <li className="nav-item">
+          <Link className="nav-link" to="/login">login</Link>
+        </li>
+        <li className="nav-item">
+          <Link className="nav-link" to="/register">register</Link>
         </li>
       </ul>
       

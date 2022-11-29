@@ -1,3 +1,32 @@
 nav a.active {
-    background-color: #fff;
+    color: rgb(169, 241, 86)!important;
   }
+
+
+.navbar-nav, .navbar{
+  align-items: baseline!important;
+}
+.navbar-brand, .nav-link{
+  color:cyan!important;
+}
+.navbar-cart{
+  font-size: 25px;
+    margin-left: 10px;
+    z-index: 3;
+  position: relative;
+
+}
+.nav-link{
+  padding:0!important;
+  margin: 0 10px;
+}
+.cart-nav-link{
+  position: relative;
+}
+
+.cart-nav-link .cart-number{
+  position: absolute;
+    left: 60%;
+    bottom: 40%;
+    color: red;
+}

@@ -1,12 +1,17 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { useDispatch } from "react-redux"
+import {selectProductAction} from "./../../../redux/redux"
 // icons
 import { MdOutlineFavorite , MdOutlineFavoriteBorder} from "react-icons/md";
 import "./ProductCard.css"
 const ProductCard =({product})=>{
     const navigate = useNavigate();
     const [fav, setFav] = useState(false)
+    const dispatch = useDispatch()
+
     function goToDetails(){
+        dispatch(selectProductAction(product))
         navigate(`/product/${product.id}`)
     }
     function toggleFav(){
@@ -27,7 +32,7 @@ const ProductCard =({product})=>{
             <div className="card_subFlex">
             <p className="card-text text-info">{(product.price.toString()).replace(".",",")} EGP</p>
             <div className="d-flex align-items-baseline">
-            <span class="stars alignright"><span style={{width:`${product.rating.rate*20}%`}}></span></span>
+            <span className="stars alignright"><span style={{width:`${product.rating.rate*20}%`}}></span></span>
             <p className="card-text ms-2"><small className="text-muted">rated by: {product.rating.count} user</small></p>  
             </div>
             

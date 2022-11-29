@@ -1,12 +1,16 @@
 import {useState, useEffect} from "react"
+// Components
+
 import ProductCard from "./ProductCard/ProductCard"
 const Products =()=>{
     const [products, setProducts] = useState([])
+    
+
     useEffect(()=>{
         fetch('https://fakestoreapi.com/products')
         .then(res=>res.json())
         .then(json=>setProducts(json))
-    },[products])
+    })
     return(<>
         
         {products.length ? 

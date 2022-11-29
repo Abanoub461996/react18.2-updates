@@ -4,7 +4,6 @@ import NavbarComponent from "./NavBar/Navbar";
 function ProductLayout() {
   return (
     <>
-    <NavbarComponent />
       <Outlet />
     </>
   );

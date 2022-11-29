@@ -1,25 +1,34 @@
 import { useState, useEffect } from "react";
 import {useParams} from "react-router-dom";
+import { useSelector } from "react-redux";
 
+// ICONS
 import { MdOutlineFavorite , MdOutlineFavoriteBorder} from "react-icons/md";
 
 const ProductDetails = ()=>{
-    const [product, setProduct] = useState()
     const [fav, setFav] = useState(false)
-
+    const [product, setProduct]=useState({})
     let {id} =useParams()
 
+    let prod = useSelector((state)=>{
+        return state.product
+    })
+    
     useEffect(()=>{
-        fetch(`https://fakestoreapi.com/products/${id}`)
-        .then(res=>res.json())
-        .then(json=>setProduct(json))
+        if(prod?.id != id){
+            fetch(`https://fakestoreapi.com/products/${id}`)
+            .then(res=>res.json())
+            .then(json=>setProduct(json))
+        }else{
+            setProduct(prod)
+        }
     },[id])
 
     function toggleFav(){
         setFav(!fav)
     }
     return (<>
-    {product?
+    {product.id?
     <div className="card m-3">
     <div className="row g-0">
         <div className="col-md-4">
