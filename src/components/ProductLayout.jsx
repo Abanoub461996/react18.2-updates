@@ -1,13 +1,11 @@
 import { Outlet } from "react-router-dom";
+import NavbarComponent from "./NavBar/Navbar";
 
 function ProductLayout() {
   return (
     <>
-    <div className="alert alert-info " role="alert">
-      Order now and get your package delivered to your door step in 24 hours
-    </div>
+    <NavbarComponent />
       <Outlet />
-
     </>
   );
 }

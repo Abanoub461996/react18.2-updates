@@ -1,10 +1,10 @@
 import NavbarComponent from './NavBar/Navbar';
-
+import { Outlet } from 'react-router-dom';
 function RootLayout({ children }) {
   return (
     <>
       <NavbarComponent />
-      <main> {children}</main>
+      <Outlet /><h4>layout root footer</h4>
     </>
   );
 }

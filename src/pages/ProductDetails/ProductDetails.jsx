@@ -43,11 +43,11 @@ const ProductDetails = ()=>{
     </div>
     </div>
     : 
-    <div className="d-flex">
-<div className="spinner-grow text-primary m-auto" role="status" style={{}}>
-            <span className="visually-hidden">Loading...</span>
+        <div className="d-flex justify-content-center align-items-center"style={{height:"90vh"}}>
+            <div className="spinner-grow text-primary" role="status">
+                <span className="visually-hidden">Loading...</span>
+            </div>
         </div>
-    </div>
     
     
     }
