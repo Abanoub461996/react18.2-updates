@@ -8,9 +8,12 @@ import Products from './pages/Products/Products';
 import Login from './pages/Login/Login';
 import Register from './pages/Register/Register';
 import ErrorPage from './components/ErrorPage';
-
+// PRIVATE COMPONENTS
+import PrivateLayout from './components/PrivateLayout';
+import Cart from './pages/Cart/Cart';
 // Modules 
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+
 
 
 function App() {
@@ -25,8 +28,10 @@ function App() {
           </Route>
           <Route path="/login" element ={<Login/>} />
           <Route path="/register" element ={<Register/>} />
+          <Route path="/cart" element={<PrivateLayout/>}>
+            <Route index element={<Cart/>} />
+          </Route>
         </Route>
-        
         <Route path="*" element={<ErrorPage/>} />
       </Routes>
       

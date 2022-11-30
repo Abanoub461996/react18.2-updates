@@ -6,9 +6,8 @@ import { FaOpencart } from "react-icons/fa";
 import './Navbar.css'
 
 function NavbarComponent() { 
-  let user = useSelector((state)=>{
-    return state.user
-  })
+  let {user,wishList} = useSelector((state)=>state)
+  
   
 	return (
 		<>
@@ -24,9 +23,9 @@ function NavbarComponent() {
           <Link className="nav-link " to="/">Home</Link>
         </li>
         <li className="nav-item">
-          <Link className="nav-link cart-nav-link" to="/product">
+          <Link className="nav-link cart-nav-link" to="/cart">
             <FaOpencart className="navbar-cart"/>
-            <span className="cart-number">3</span>
+            <span className="cart-number">{wishList.length}</span>
           </Link>
         </li>
       </ul>

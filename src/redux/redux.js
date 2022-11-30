@@ -1,16 +1,17 @@
-import { combineReducers } from 'redux'
 import {configureStore} from "@reduxjs/toolkit";
 
 const SELECTITEM ="SELECTITEM";
 const LOGIN ="LOGIN";
 const LOGOUT ="LOGOUT";
-
+const ADDTOWISHLIST ="ADDTOWISHLIST";
+const REMOVEFROMWISHLIST="REMOVEFROMWISHLIST";
 let initialState ={
     slectedItem:{},
     user:{
         loggedIn:false,
         userProfile:{}
-    }
+    },
+    wishList:[]
 }
 // SELECTED ITEM ACTIONS
 export const selectProductAction = (payload)=>{
@@ -33,6 +34,19 @@ export const logoutAction =(payload)=>{
         payload
     }
 }
+// SELECTED ITEM ACTIONS
+export const addToWishlist = (payload)=>{
+    return {
+        type:ADDTOWISHLIST,
+        payload
+    }
+}
+export const removeFromWishList = (payload)=>{
+    return {
+        type:REMOVEFROMWISHLIST,
+        payload
+    }
+}
 const fullStateReducer =(state = initialState, action)=>{
     switch (action.type) {
         case SELECTITEM:
@@ -40,6 +54,16 @@ const fullStateReducer =(state = initialState, action)=>{
                 ...state,
                 slectedItem : action.payload
             }
+        case ADDTOWISHLIST:
+        return {
+            ...state,
+            wishList : [...state.wishList,action.payload]
+        }
+        case REMOVEFROMWISHLIST:
+            return {
+            ...state,
+            wishList : state.wishList.filter((item)=>(item.id !== action.payload.id))
+        }
         case LOGIN:
             return {
                 ...state,

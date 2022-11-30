@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useDispatch } from "react-redux"
-import {selectProductAction} from "./../../../redux/redux"
+import {selectProductAction, addToWishlist, removeFromWishList} from "./../../../redux/redux"
 // icons
 import { MdOutlineFavorite , MdOutlineFavoriteBorder} from "react-icons/md";
 import "./ProductCard.css"
@@ -15,6 +15,11 @@ const ProductCard =({product})=>{
         navigate(`/product/${product.id}`)
     }
     function toggleFav(){
+        if(!fav){
+            dispatch(addToWishlist(product))
+        }else{
+            dispatch(removeFromWishList(product))
+        }
         setFav(!fav)
     }
     return (
