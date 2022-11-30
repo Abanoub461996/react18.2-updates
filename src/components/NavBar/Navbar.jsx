@@ -20,7 +20,7 @@ function NavbarComponent() {
         </li>
         <li className="nav-item">
           <Link className="nav-link cart-nav-link" to="/product">
-            <FaOpencart class="navbar-cart"/>
+            <FaOpencart className="navbar-cart"/>
             <span className="cart-number">3</span>
           </Link>
         </li>

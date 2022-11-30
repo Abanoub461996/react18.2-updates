@@ -4,7 +4,7 @@ function RootLayout({ children }) {
   return (
     <>
       <NavbarComponent />
-      <Outlet /><h4>layout root footer</h4>
+      <Outlet/>
     </>
   );
 }
