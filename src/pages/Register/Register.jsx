@@ -1,6 +1,11 @@
 import { Link } from "react-router-dom";
 import { useFormik } from "formik";
-import * as yup from "yup"
+import * as yup from "yup";
+
+import { useDispatch } from "react-redux";
+import {loginAction} from "./../../redux/redux";
+import { useNavigate } from "react-router-dom";
+
 
 const Register= ()=>{
   const formik =useFormik({
@@ -10,7 +15,7 @@ const Register= ()=>{
           password:"",
           confirmPass:""
         },
-        onSubmit:(values)=>{console.log(values);},
+        onSubmit:(values)=>{register(values);},
         validationSchema: yup.object({
           username:yup.string()
           .required("Mail is required")
@@ -27,10 +32,16 @@ const Register= ()=>{
           .matches(/[A-Z]/, 'Password requires an uppercase letter')
           .matches(/[^\w]/, 'Password requires a symbol'),
           confirmPass:yup.string()
-          .required("Confirm your password")
+          .required("Confirm your password Again")
           .oneOf([yup.ref('password'), null], 'Must match "password" field value'),
         })
     })
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const register = (values)=>{
+        dispatch(loginAction(values))
+        navigate("/")
+    }
 
     return(<>
        <div className="Auth-form-container">
@@ -88,10 +99,11 @@ const Register= ()=>{
                   ${formik.touched.confirmPass && !formik.errors.confirmPass? "border-success": ""}`}
             />
           </div>
-          {formik.touched.password &&formik.errors.password && formik.touched.confirmPass &&formik.errors.confirmPass &&  <div className="alert alert-danger text-center p-1 mt-2">{formik.errors.confirmPass}</div>}
+          {formik.touched.password &&!formik.errors.password && formik.touched.confirmPass &&formik.errors.confirmPass &&  <div className="alert alert-danger text-center p-1 mt-2">{formik.errors.confirmPass}</div>}
+          {formik.touched.confirmPass && (!formik.touched.password  || formik.errors.password) &&  <div className="alert alert-danger text-center p-1 mt-2">Confirm a valid password first</div>}
 
           <div className="d-grid gap-2 mt-3">
-            <button type="submit" className="btn btn-primary">
+          <button type="submit" className={`btn btn-primary submit-btn ${(!(formik.dirty)|| !(formik.isValid)) && "disabled"}`}>
               Submit
             </button>
           </div>

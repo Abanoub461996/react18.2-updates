@@ -11,11 +11,11 @@ const ProductDetails = ()=>{
     let {id} =useParams()
 
     let prod = useSelector((state)=>{
-        return state.product
+        return state.slectedItem
     })
     
     useEffect(()=>{
-        if(prod?.id != id){
+        if(prod?.id !== parseInt(id)){
             fetch(`https://fakestoreapi.com/products/${id}`)
             .then(res=>res.json())
             .then(json=>setProduct(json))

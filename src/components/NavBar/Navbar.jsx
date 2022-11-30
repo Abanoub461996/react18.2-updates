@@ -1,10 +1,15 @@
-import {Link} from "react-router-dom"
+import {Link} from "react-router-dom";
+import { useSelector } from "react-redux";
+
 // ICONS
 import { FaOpencart } from "react-icons/fa";
-
 import './Navbar.css'
+
 function NavbarComponent() { 
- 
+  let user = useSelector((state)=>{
+    return state.user
+  })
+  
 	return (
 		<>
 		<nav className="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -25,6 +30,7 @@ function NavbarComponent() {
           </Link>
         </li>
       </ul>
+      {!(user?.loggedIn)?
       <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
         <li className="nav-item">
           <Link className="nav-link" to="/login">login</Link>
@@ -33,6 +39,14 @@ function NavbarComponent() {
           <Link className="nav-link" to="/register">register</Link>
         </li>
       </ul>
+      :
+      <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
+        <li className="nav-item">
+          <p style={{color:"#4eed86"}} className="mb-0">Hi {user.userProfile.email.slice(0,4)}!</p>
+        </li>
+      </ul>
+      }
+      
       
     </div>
   </div>

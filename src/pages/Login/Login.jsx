@@ -1,5 +1,8 @@
 import { Link } from "react-router-dom";
 import { useFormik } from "formik";
+import { useDispatch } from "react-redux";
+import {loginAction} from "./../../redux/redux";
+import { useNavigate } from "react-router-dom";
 import * as yup from "yup"
 
 import "./Login.css"
@@ -10,7 +13,7 @@ const Login= ()=>{
             email:"",
             password:""
         },
-        onSubmit:(values)=>{console.log(values);},
+        onSubmit:(values)=>{logIn(values);},
         validationSchema: yup.object({
             email:yup.string().min(6,"Email is too short")     
             .email("Invalid email format")
@@ -25,6 +28,12 @@ const Login= ()=>{
             .matches(/[^\w]/, 'Password requires a symbol'),
         })
     })
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const logIn = (values)=>{
+        dispatch(loginAction(values))
+        navigate("/")
+    }
     return(<>
         <div className="Auth-form-container" onSubmit={formik.handleSubmit}>
         <form className="Auth-form">
@@ -59,7 +68,7 @@ const Login= ()=>{
             {formik.touched.password &&formik.errors.password &&  <div className="alert alert-danger text-center p-1 mt-2">{formik.errors.password}</div>}
 
             <div className="d-grid gap-2 mt-3">
-              <button type="submit" className="btn btn-primary">
+              <button type="submit" className={`btn btn-primary submit-btn ${(!(formik.dirty)|| !(formik.isValid)) && "disabled"}`}>
                 Submit
               </button>
             </div>
@@ -71,7 +80,6 @@ const Login= ()=>{
             </div>
           </div>
         </form>
-        
       </div>
 
     </>)
