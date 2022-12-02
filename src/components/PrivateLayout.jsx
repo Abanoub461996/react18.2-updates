@@ -1,23 +1,20 @@
-import { Outlet, Navigate, useNavigate } from "react-router-dom";
+import { Outlet, Navigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { useEffect } from "react";
 
 const PrivateLayout =()=>{
   let auth= useSelector((state)=>{
-    return state.user.loggedIn
+    return state.user.loginToken
   })
-  const navigate = useNavigate()
-  
-  useEffect(()=>{
-    if(!auth){
-      alert("You need to sign in first")
-      navigate("/login")
-    }
-  },[auth, navigate])
-  
+
+  function hasJWT() {
+       let flag = false;
+       //check user has JWT token
+       auth? flag=true : flag=false
+       return flag
+   }
   return (
       <>
-      {auth&&<Outlet />}
+      {hasJWT() ? <Outlet /> : <Navigate to="/login" replace />}
       </>
   );
 }

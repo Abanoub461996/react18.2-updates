@@ -8,7 +8,7 @@ const REMOVEFROMWISHLIST="REMOVEFROMWISHLIST";
 let initialState ={
     slectedItem:{},
     user:{
-        loggedIn:false,
+        loginToken:"",
         userProfile:{}
     },
     wishList:[]
@@ -68,15 +68,16 @@ const fullStateReducer =(state = initialState, action)=>{
             return {
                 ...state,
                 user:{...state.user,
-                    loggedIn:true,
-                    userProfile:action.payload
+                    loginToken:action.payload.loginToken,
+                    ...state.user.userProfile,
+                    userProfile:action.payload.values
                 }
             }
         case LOGOUT:
             return {
                 ...state,
                 user:{...state.user,
-                    loggedIn:false,
+                    loginToken:"",
                     userProfile:{}
                 }
             }

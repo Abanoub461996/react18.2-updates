@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useFormik } from "formik";
 import * as yup from "yup";
-
+import axios from 'axios';
 import { useDispatch } from "react-redux";
 import {loginAction} from "./../../redux/redux";
 import { useNavigate } from "react-router-dom";
@@ -39,8 +39,29 @@ const Register= ()=>{
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const register = (values)=>{
-        dispatch(loginAction(values))
-        navigate("/")
+      getToken(values)
+    }
+    const getToken =(values)=>{
+      // specific payload to return a token from the dake reqres api
+      let tokenPayload ={
+        "email": "eve.holt@reqres.in",
+        "password": "cityslicka"
+    }
+      axios.post("https://reqres.in/api/login", tokenPayload)
+     .then(response => {
+       //get token from response
+       const token = response.data.token
+       let loginActionPayload = {
+        loginToken:token,
+        values : values
+      }
+       console.log(loginActionPayload);
+       dispatch(loginAction(loginActionPayload))
+      //redirect user to home page
+      navigate("/")
+
+     })
+     .catch(err => console.log(err));
     }
 
     return(<>

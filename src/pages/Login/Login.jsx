@@ -1,6 +1,7 @@
 import { Link ,useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import { useDispatch } from "react-redux";
+import axios from 'axios';
 import {loginAction} from "./../../redux/redux";
 import * as yup from "yup"
 
@@ -24,15 +25,38 @@ const Login= ()=>{
             .matches(/[0-9]/, 'Password requires a number')
             .matches(/[a-z]/, 'Password requires a lowercase letter')
             .matches(/[A-Z]/, 'Password requires an uppercase letter')
-            .matches(/[^\w]/, 'Password requires a symbol'),
+            .matches(/[^w]/, 'Password requires a symbol'),
         })
     })
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const logIn = (values)=>{
-        dispatch(loginAction(values))
-        navigate("/")
+      getToken(values)
+      
     }
+    const getToken =(values)=>{
+      // specific payload to return a token from the dake reqres api
+      let tokenPayload ={
+        "email": "eve.holt@reqres.in",
+        "password": "cityslicka"
+    }
+      axios.post("https://reqres.in/api/login", tokenPayload)
+     .then(response => {
+       //get token from response
+       const token = response.data.token
+       let loginActionPayload = {
+        loginToken:token,
+        values : values
+      }
+       console.log(loginActionPayload);
+       dispatch(loginAction(loginActionPayload))
+      //redirect user to home page
+      navigate("/")
+
+     })
+     .catch(err => console.log(err));
+ };
+
     return(<>
         <div className="Auth-form-container" onSubmit={formik.handleSubmit}>
         <form className="Auth-form">

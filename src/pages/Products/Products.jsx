@@ -15,7 +15,7 @@ const Products =()=>{
         .then(json=>setProducts(json))
     })
     return(<>
-        {(user?.loggedIn) && <div className="alert alert-success text-center">
+        {(user?.loginToken) && <div className="alert alert-success text-center">
             Hi {user?.userProfile.email.slice(0,4)}! let's start shopping our best seeling items
         </div>}
         {products.length ? 
