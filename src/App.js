@@ -13,10 +13,21 @@ import PrivateLayout from './components/PrivateLayout';
 import Cart from './pages/Cart/Cart';
 // Modules 
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-
-
+import axios from "axios"
+import {useSelector} from "react-redux"
+import { useEffect } from 'react';
 
 function App() {
+  const token = useSelector((state)=>{
+    return state.user.loginToken
+  })
+  const setAuthToken = token => {
+    if (token) {axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;}
+    else{delete axios.defaults.headers.common["Authorization"];}
+  }
+  useEffect(()=>{
+    token && setAuthToken(token)
+  },[token])
   return (<>
   <BrowserRouter>
       <Routes>
