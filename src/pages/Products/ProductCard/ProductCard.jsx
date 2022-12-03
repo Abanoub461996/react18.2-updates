@@ -26,19 +26,19 @@ const ProductCard =({product})=>{
         <>
         <div className="col-3">
         <div className="card h-100 m-1">
-            <img src={product.image} className="card-img-top mx-auto p-3" alt="product" style={{maxHeight: "400px", width:"fit-content", maxWidth:"100%"}}/>
+            <img src={product.images[0]} loading="lazy" className="card-img-top mx-auto p-3" alt="product" style={{maxHeight: "400px", width:"fit-content", maxWidth:"100%"}}/>
             <div className="card-body">
             <h5 className="card-title">{product.title}</h5>
-            <h6 className="card-text">{product.category}</h6>
+            {/* <h6 className="card-text">{product.category}</h6> */}
 
-            <p className="card-text">{product.description.length >80 ? product.description.slice(0,80)+"...":
-             product.description} 
-             <small className="show-more text-muted ms-1" style={{whiteSpace:"nowrap"}} onClick ={goToDetails}>show more.</small></p>
+            {/* <p className="card-text">{product.description.length >80 ? product.description.slice(0,80)+"...":
+             product.description}  */}
+             {/* <small className="show-more text-muted ms-1" style={{whiteSpace:"nowrap"}} onClick ={goToDetails}>show more.</small></p> */}
             <div className="card_subFlex">
-            <p className="card-text text-info">{(product.price.toString()).replace(".",",")} EGP</p>
+            {/* <p className="card-text text-info">{(product.price.toString()).replace(".",",")} EGP</p> */}
             <div className="d-flex align-items-baseline">
-            <span className="stars alignright"><span style={{width:`${product.rating.rate*20}%`}}></span></span>
-            <p className="card-text ms-2"><small className="text-muted">rated by: {product.rating.count} user</small></p>  
+            {/* <span className="stars alignright"><span style={{width:`${product.rating.rate*20}%`}}></span></span> */}
+            {/* <p className="card-text ms-2"><small className="text-muted">rated by: {product.rating.count} user</small></p>   */}
             </div>
             
             </div>

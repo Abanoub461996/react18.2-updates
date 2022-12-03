@@ -28,6 +28,7 @@ function App() {
   useEffect(()=>{
     token && setAuthToken(token)
   },[token])
+  
   return (<>
   <BrowserRouter>
       <Routes>
