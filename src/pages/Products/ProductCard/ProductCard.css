@@ -26,3 +26,22 @@ span.stars, span.stars span {
 span.stars span {
     background-position: 0 0;
 }
+.item-card{
+    box-shadow: 0px 5px 8px 1px #5c4922;
+    border-end-end-radius: 20px!important;
+}
+.card-price{
+    font-family: fantasy;
+    color:#d15834 ;
+}
+.item-card .card-title{
+    font-family: fantasy;
+}
+.css-1to7aaw-MuiButtonBase-root-MuiPaginationItem-root.Mui-selected {
+    color: #fff;
+    background-color: #d15834 !important;
+}
+.prods_container{
+    max-width: 1440px!important;
+    margin: 0 auto !important;
+}

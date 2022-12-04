@@ -3,7 +3,10 @@ import { useSelector } from "react-redux";
 import { Pagination , usePagination} from "@mui/material";
 // Components
 
-import ProductCard from "./ProductCard/ProductCard"
+import ProductCard from "./ProductCard/ProductCard";
+import "./ProductCard/ProductCard.css"
+import axios from "axios";
+
 const Products =()=>{
     const [products, setProducts] = useState([])
     let user = useSelector((state)=>{
@@ -11,10 +14,14 @@ const Products =()=>{
     })
 
     useEffect(()=>{
-        fetch('https://api.escuelajs.co/api/v1/products')
-        .then(res=>res.json())
-        .then(json=>setProducts(json))
+        async function getProds(){
+            const res = await axios.get('https://api.escuelajs.co/api/v1/products');
+            setProducts(res.data)
+        }
+        getProds()
     })
+    // setProducts(getProducts())
+    // getProducts()
    const [currentPage, setCurrentPage] = useState(1);
    const [prodsPerPage] = useState(15);
  
@@ -23,30 +30,19 @@ const Products =()=>{
    const indexOfLastPost = currentPage * prodsPerPage;
    const indexOfFirstPost = indexOfLastPost - prodsPerPage;
    const totalProds =products.length;
-   const currentProds = products.slice(indexOfFirstPost, indexOfLastPost);
-   const _DATA = usePagination(products, prodsPerPage);
+   const currentProds = products.length && products.slice(indexOfFirstPost, indexOfLastPost);
 
   const handleChange = (e, p) => {
     setCurrentPage(p);
-    _DATA.jump(p);
+    // _DATA.jump(p);
   };
-   const previousPage = () => {
-    if (currentPage !== 1) {
-       setCurrentPage(currentPage - 1);
-        }
-    };
-
-    const nextPage = () => {
-        if (currentPage !== Math.ceil(totalProds.length / prodsPerPage)) {
-        setCurrentPage(currentPage + 1);
-        }
-    };
     return(<>
         {(user?.loginToken) && <div className="alert alert-success text-center">
             Hi {user?.userProfile.email.slice(0,4)}! let's start shopping our best seeling items
         </div>}
         {products.length ? 
-        <><div className="row row-cols-1 row-cols-md-3 g-4 mx-4">
+        <><div className="prods_container row row-cols-1 row-cols-md-3 g-4 mx-4" style={{ maxWidth: '1440px!important',
+            margin: '0 auto !important'}}>
                 {currentProds?.map((element) => {
                     return <ProductCard product={element} key={element.id} />;
                 })}

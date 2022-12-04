@@ -2,7 +2,7 @@ import { Link ,useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import { useDispatch } from "react-redux";
 import axios from 'axios';
-import {loginAction} from "./../../redux/redux";
+import {loginAction} from "../../utils/redux";
 import * as yup from "yup"
 
 import "./Login.css"
@@ -18,7 +18,7 @@ const Login= ()=>{
             email:yup.string().min(6,"Email is too short")     
             .email("Invalid email format")
             .required("Mail is required")
-            .matches(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,"Invalid email format"),
+            .matches(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,"Invalid email format"),
             password:yup.string()
             .required("Password is required")
             .min(8, 'Password must be 8 characters long')
@@ -34,27 +34,23 @@ const Login= ()=>{
       getToken(values)
       
     }
-    const getToken =(values)=>{
+    async function getToken(values){
       // specific payload to return a token from the dake reqres api
       let tokenPayload ={
         "email": "eve.holt@reqres.in",
         "password": "cityslicka"
     }
-      axios.post("https://reqres.in/api/login", tokenPayload)
-     .then(response => {
+      let response = await axios.post("https://reqres.in/api/login", tokenPayload)
        //get token from response
        const token = response.data.token
+      //  store token in the global state
        let loginActionPayload = {
         loginToken:token,
         values : values
       }
-       console.log(loginActionPayload);
        dispatch(loginAction(loginActionPayload))
       //redirect user to home page
       navigate("/")
-
-     })
-     .catch(err => console.log(err));
  };
 
     return(<>

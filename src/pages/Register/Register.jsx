@@ -3,7 +3,7 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import axios from 'axios';
 import { useDispatch } from "react-redux";
-import {loginAction} from "./../../redux/redux";
+import {loginAction} from "../../utils/redux";
 import { useNavigate } from "react-router-dom";
 
 
@@ -38,32 +38,44 @@ const Register= ()=>{
     })
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const register = (values)=>{
-      getToken(values)
-    }
-    const getToken =(values)=>{
+    async function getToken(values){
       // specific payload to return a token from the dake reqres api
       let tokenPayload ={
         "email": "eve.holt@reqres.in",
         "password": "cityslicka"
-    }
-      axios.post("https://reqres.in/api/login", tokenPayload)
-     .then(response => {
-       //get token from response
+      }
+      let response = await axios.post("https://reqres.in/api/login", tokenPayload)
+       //get token from response from a random api that generates token
        const token = response.data.token
+
+       // check if user is already registered 
+       const apiReqBody = Object.assign({}, {...values,role: "customer",
+       avatar: "https://api.lorem.space/image/face?w=640&h=480&r=9627",});
+       delete apiReqBody.confirmPass;
+       let userExists=true;
+        axios.get('https://api.escuelajs.co/api/v1/users').then((res)=>{
+          userExists = res.data.some((el)=>{
+            return el.email === apiReqBody.email})
+            console.log("after the loop",userExists);
+
+            //  Add the new user to the users collection
+            if(!userExists){
+              axios.post('https://api.escuelajs.co/api/v1/users',apiReqBody).then(res=>{console.log(res);})
+            }
+        })
+      
+      //  store token in the global state
        let loginActionPayload = {
         loginToken:token,
         values : values
       }
-       console.log(loginActionPayload);
        dispatch(loginAction(loginActionPayload))
       //redirect user to home page
       navigate("/")
-
-     })
-     .catch(err => console.log(err));
+ };
+    const register = (values)=>{
+      getToken(values)
     }
-
     return(<>
        <div className="Auth-form-container">
       <form className="Auth-form" onSubmit={formik.handleSubmit}>
