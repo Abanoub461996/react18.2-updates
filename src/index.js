@@ -2,13 +2,12 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import {store} from "./utils/redux"
 import { Provider } from 'react-redux';
-import {createBrowserRouter,createRoutesFromElements,Route,RouterProvider,
-} from "react-router-dom";
-// import App from './App';
+import {createBrowserRouter,createRoutesFromElements,Route,RouterProvider} from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
 import './index.css';
-
+// loader functions
+import {getProducts} from "./utils/api"
 // LAYOUTS
 import RootLayout from './components/RootLayout';
 import ProductLayout from './components/ProductLayout';
@@ -24,7 +23,7 @@ import PrivateLayout from './components/PrivateLayout';
 import Cart from './pages/Cart/Cart';
 const router = createBrowserRouter(createRoutesFromElements(
         <Route path="/" element={<RootLayout/>} >
-          <Route index="true" element ={<Products/>} />
+          <Route index="true" element ={<Products/>} id="root" loader={getProducts}  errorElement={<ErrorPage />} />
           <Route path="/product"  element={<ProductLayout/>} >
             <Route index="true" element ={<Products/>} />
             <Route path=":id" element ={<ProductDetails/>} />
@@ -41,7 +40,6 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      {/* <App /> */}
       <RouterProvider router={router}/>
     </Provider>
   </React.StrictMode>

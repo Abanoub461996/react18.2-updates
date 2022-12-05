@@ -1,32 +1,20 @@
-import {useState, useEffect} from "react";
+import {useState} from "react";
 import { useSelector } from "react-redux";
 import { Pagination } from "@mui/material";
+import { useRouteLoaderData } from "react-router-dom";
 // Components
 
 import ProductCard from "./ProductCard/ProductCard";
 import "./ProductCard/ProductCard.css"
-import axios from "axios";
 
 const Products =()=>{
-    const [products, setProducts] = useState([])
     let user = useSelector((state)=>{
         return state.user
     })
-
-    useEffect(()=>{
-        async function getProds(){
-            const res = await axios.get('https://api.escuelajs.co/api/v1/products');
-            setProducts(res.data)
-        }
-        getProds()
-    })
-    // setProducts(getProducts())
-    // getProducts()
+    const products = useRouteLoaderData("root").data;
    const [currentPage, setCurrentPage] = useState(1);
    const [prodsPerPage] = useState(15);
- 
-   // ...
- 
+//  Setting the Pagination by splitting the return data 
    const indexOfLastPost = currentPage * prodsPerPage;
    const indexOfFirstPost = indexOfLastPost - prodsPerPage;
    const totalProds =products.length;

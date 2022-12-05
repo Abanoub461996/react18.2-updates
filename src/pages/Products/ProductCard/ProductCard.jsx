@@ -31,9 +31,9 @@ const ProductCard =({product})=>{
             <h5 className="card-title">{product.title}</h5>
             {/* <h6 className="card-text">{product.category}</h6> */}
 
-            {/* <p className="card-text">{product.description.length >80 ? product.description.slice(0,80)+"...":
-             product.description}  */}
-             {/* <small className="show-more text-muted ms-1" style={{whiteSpace:"nowrap"}} onClick ={goToDetails}>show more.</small></p> */}
+            <p className="card-text">{product.description.length >80 ? product.description.slice(0,80)+"...":
+             product.description} 
+             <small className="show-more text-muted ms-1" style={{whiteSpace:"nowrap"}} onClick ={goToDetails}>show more.</small></p>
             <div className="card_subFlex">
             <p className="card-text card-price">{(product.price.toString()).replace(".",",")} EGP</p>
             {fav?
