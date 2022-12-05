@@ -6,8 +6,10 @@ import {loginAction} from "../../utils/redux";
 import * as yup from "yup"
 
 import "./Login.css"
+import { useState } from "react";
 
 const Login= ()=>{
+  const [apiValid,setApiValid] = useState(true)
     const formik =useFormik({
         initialValues:{
             email:"",
@@ -44,13 +46,32 @@ const Login= ()=>{
        //get token from response
        const token = response.data.token
       //  store token in the global state
-       let loginActionPayload = {
-        loginToken:token,
-        values : values
-      }
-       dispatch(loginAction(loginActionPayload))
-      //redirect user to home page
-      navigate("/")
+
+      // Check user have an account 
+      axios.get('https://api.escuelajs.co/api/v1/users').then((res)=>{
+        let user = res.data && res.data.filter((el)=>el.email === values.email)
+        if(user.length){
+          if(user[0].password === values.password){
+            let loginActionPayload = {
+                loginToken:token,
+                values : user[0]
+            }
+            delete loginActionPayload.values.password;
+            dispatch(loginAction(loginActionPayload));
+            navigate("/")
+          }else {
+            setApiValid(false)
+            formik.values.password = "";
+          }
+        }else{
+          var userRes = window.confirm("you don't have an Account, Do you want to create a new account ?");
+                if(userRes){
+                  navigate("/register")
+                }else{
+                  navigate("/")
+                }
+        }
+      })
  };
 
     return(<>
@@ -58,6 +79,7 @@ const Login= ()=>{
         <form className="Auth-form">
           <div className="Auth-form-content">
             <h3 className="Auth-form-title">Sign In</h3>
+            {(!apiValid)&&  <div className="alert alert-danger text-center p-1 mt-2">Wrong Password, try again!</div>}
             
             <div className="form-group mt-3">
               <label>Email address</label>
@@ -78,13 +100,13 @@ const Login= ()=>{
               <input
                 type="password"
                 className={`form-control mt-1 border
-                  ${formik.touched.password && formik.errors.password? "border-danger": ""}
+                  ${(formik.touched.password && formik.errors.password)? "border-danger": ""}
                   ${formik.touched.password && !formik.errors.password? "border-success": ""}`}
                 name="password"
                 {...formik.getFieldProps("password")}
               />
             </div>
-            {formik.touched.password &&formik.errors.password &&  <div className="alert alert-danger text-center p-1 mt-2">{formik.errors.password}</div>}
+            {(formik.touched.password &&formik.errors.password)&&  <div className="alert alert-danger text-center p-1 mt-2">{formik.errors.password}</div>}
 
             <div className="d-grid gap-2 mt-3">
               <button type="submit" className={`btn btn-primary submit-btn ${(!(formik.dirty)|| !(formik.isValid)) && "disabled"}`}>

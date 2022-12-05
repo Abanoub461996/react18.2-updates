@@ -2,13 +2,12 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 100vw;
     height: 85vh;
   }
   
   .Auth-form {
     width: 420px;
-    box-shadow: rgb(0 0 0 / 16%) 1px 1px 10px;
+    box-shadow: 2px 4px 6px 2px #60c2c5;
     padding-top: 30px;
     padding-bottom: 20px;
     border-radius: 8px;

@@ -3,34 +3,34 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import axios from 'axios';
 import { useDispatch } from "react-redux";
-import {loginAction} from "../../utils/redux";
+import {registerAction} from "../../utils/redux";
 import { useNavigate } from "react-router-dom";
 
 
 const Register= ()=>{
   const formik =useFormik({
         initialValues:{
-          username:"",
+          name:"",
           email:"",
           password:"",
           confirmPass:""
         },
         onSubmit:(values)=>{register(values);},
         validationSchema: yup.object({
-          username:yup.string()
+          name:yup.string()
           .required("Mail is required")
           .min(4,"User name is too short"),
           email:yup.string().min(6,"Email is too short")     
           .email("Invalid email format")
           .required("Mail is required")
-          .matches(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,"Invalid email format"),
+          .matches(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,"Invalid email format"),
           password:yup.string()
           .required("Password is required")
           .min(8, 'Password must be 8 characters long')
           .matches(/[0-9]/, 'Password requires a number')
           .matches(/[a-z]/, 'Password requires a lowercase letter')
-          .matches(/[A-Z]/, 'Password requires an uppercase letter')
-          .matches(/[^\w]/, 'Password requires a symbol'),
+          .matches(/[A-Z]/, 'Password requires an uppercase letter'),
+          // .matches(/[^\w]/, 'Password requires a symbol'),
           confirmPass:yup.string()
           .required("Confirm your password Again")
           .oneOf([yup.ref('password'), null], 'Must match "password" field value'),
@@ -59,19 +59,36 @@ const Register= ()=>{
             console.log("after the loop",userExists);
 
             //  Add the new user to the users collection
+            const options = {
+              headers: {
+                  'Content-Type': 'application/json',
+              }
+            }
             if(!userExists){
-              axios.post('https://api.escuelajs.co/api/v1/users',apiReqBody).then(res=>{console.log(res);})
+              console.log(JSON.stringify(apiReqBody, options));
+              axios.post('https://api.escuelajs.co/api/v1/users',apiReqBody)
+              .then((res)=>{
+                let regActionPayload = {
+                  loginToken:token,
+                  values : res.data
+                }
+                delete regActionPayload.values.password;
+
+                 dispatch(registerAction(regActionPayload))
+              })
+              .catch(err=>{console.log(err.response);})
+            }else{
+              var userRes = window.confirm("you already have an Account, Do you want to sign in ?");
+              if(userRes){
+                navigate("/login")
+              }else{
+                navigate("/")
+              }
             }
         })
       
       //  store token in the global state
-       let loginActionPayload = {
-        loginToken:token,
-        values : values
-      }
-       dispatch(loginAction(loginActionPayload))
-      //redirect user to home page
-      navigate("/")
+      
  };
     const register = (values)=>{
       getToken(values)
@@ -86,11 +103,11 @@ const Register= ()=>{
             <label>Full Name</label>
             <input
               type="text"
-              name="username"
-              {...formik.getFieldProps("username")}
+              name="name"
+              {...formik.getFieldProps("name")}
               className={`form-control mt-1 border
-                  ${formik.touched.username && formik.errors.username? "border-danger": ""}
-                  ${formik.touched.username && !formik.errors.username? "border-success": ""}`}
+                  ${formik.touched.name && formik.errors.name? "border-danger": ""}
+                  ${formik.touched.name && !formik.errors.name? "border-success": ""}`}
             />
           </div>
           {formik.touched.username &&formik.errors.username &&  <div className="alert alert-danger text-center p-1 mt-2">{formik.errors.username}</div>}

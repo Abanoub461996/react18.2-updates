@@ -7,7 +7,9 @@ import './Navbar.css'
 
 function NavbarComponent() { 
   let {user,wishList} = useSelector((state)=>state)
-  
+  const handleLogout =()=>{
+console.log("ay haga ");
+  }
   
 	return (
 		<>
@@ -29,7 +31,7 @@ function NavbarComponent() {
           </Link>
         </li>
       </ul>
-      {!(user?.loggedIn)?
+      {!(user?.loginToken)?
       <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
         <li className="nav-item">
           <Link className="nav-link" to="/login">login</Link>
@@ -41,7 +43,14 @@ function NavbarComponent() {
       :
       <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
         <li className="nav-item">
-          <p style={{color:"#4eed86"}} className="mb-0">Hi {user.userProfile.email.slice(0,4)}!</p>
+          <img className="user-avatar" src={user.userProfile.avatar} alt="user face" />
+        </li>
+        <li className="nav-item dropdown">
+          <button className="nav-link dropdown-toggle" id="navbarDarkDropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+          </button>
+          <ul className="dropdown-menu user-drop-down dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
+            <li><button className="dropdown-item" onClick={handleLogout}>Sign Out</button></li>
+          </ul>
         </li>
       </ul>
       }

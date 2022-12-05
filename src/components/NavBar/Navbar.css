@@ -30,3 +30,20 @@ nav a.active {
     bottom: 40%;
     color: red;
 }
+.user-avatar{
+  border-radius:50%;
+  width: 35px;
+  height: 30px;
+}
+.dropdown-menu.user-drop-down[data-bs-popper] {
+  top: 120%;
+  left: -100%;
+  min-width: 50px;
+
+}
+
+button.nav-link {
+  background-color: transparent;
+  outline: none;
+  border: none;
+}

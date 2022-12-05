@@ -1,6 +1,7 @@
 import {configureStore} from "@reduxjs/toolkit";
 
 const SELECTITEM ="SELECTITEM";
+const REGISTER ="REGISTER";
 const LOGIN ="LOGIN";
 const LOGOUT ="LOGOUT";
 const ADDTOWISHLIST ="ADDTOWISHLIST";
@@ -22,6 +23,12 @@ export const selectProductAction = (payload)=>{
 }
 
 // USER ACTIONS
+export const registerAction =(payload)=>{
+    return {
+        type:REGISTER,
+        payload
+    }
+}
 export const loginAction =(payload)=>{
     return {
         type:LOGIN,
@@ -64,6 +71,15 @@ const fullStateReducer =(state = initialState, action)=>{
             ...state,
             wishList : state.wishList.filter((item)=>(item.id !== action.payload.id))
         }
+        case REGISTER:
+            return {
+                ...state,
+                user:{...state.user,
+                    loginToken:action.payload.loginToken,
+                    ...state.user.userProfile,
+                    userProfile:action.payload.values
+                }
+            }
         case LOGIN:
             return {
                 ...state,

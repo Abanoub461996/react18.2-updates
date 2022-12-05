@@ -1,6 +1,6 @@
 import {useState, useEffect} from "react";
 import { useSelector } from "react-redux";
-import { Pagination , usePagination} from "@mui/material";
+import { Pagination } from "@mui/material";
 // Components
 
 import ProductCard from "./ProductCard/ProductCard";
@@ -38,7 +38,7 @@ const Products =()=>{
   };
     return(<>
         {(user?.loginToken) && <div className="alert alert-success text-center">
-            Hi {user?.userProfile.email.slice(0,4)}! let's start shopping our best seeling items
+            Hi {user?.userProfile.name.split(" ")[0]}! let's start shopping our best selling items
         </div>}
         {products.length ? 
         <><div className="prods_container row row-cols-1 row-cols-md-3 g-4 mx-4" style={{ maxWidth: '1440px!important',
