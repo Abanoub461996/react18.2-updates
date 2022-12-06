@@ -41,10 +41,10 @@ const Login= ()=>{
       let tokenPayload ={
         "email": "eve.holt@reqres.in",
         "password": "cityslicka"
-    }
+      }
       let response = await axios.post("https://reqres.in/api/login", tokenPayload)
        //get token from response
-       const token = response.data.token
+      const token = response.data.token
       //  store token in the global state
 
       // Check user have an account 

@@ -22,7 +22,6 @@ const Products =()=>{
 
   const handleChange = (e, p) => {
     setCurrentPage(p);
-    // _DATA.jump(p);
   };
     return(<>
         {(user?.loginToken) && <div className="alert alert-success text-center">

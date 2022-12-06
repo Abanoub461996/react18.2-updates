@@ -17,13 +17,15 @@ import Products from './pages/Products/Products';
 // USER Components
 import Login from './pages/Login/Login';
 import Register from './pages/Register/Register';
+// Error Components
+import ErrorLoading from "./components/ErrorLoading"
 import ErrorPage from './components/ErrorPage';
 // PRIVATE COMPONENTS
 import PrivateLayout from './components/PrivateLayout';
 import Cart from './pages/Cart/Cart';
 const router = createBrowserRouter(createRoutesFromElements(
         <Route path="/" element={<RootLayout/>} >
-          <Route index="true" element ={<Products/>} id="root" loader={getProducts}  errorElement={<ErrorPage />} />
+          <Route index="true" element ={<Products/>} id="root" loader={getProducts}  errorElement={<ErrorLoading />} />
           <Route path="/product"  element={<ProductLayout/>} >
             <Route index="true" element ={<Products/>} />
             <Route path=":id" element ={<ProductDetails/>} />
