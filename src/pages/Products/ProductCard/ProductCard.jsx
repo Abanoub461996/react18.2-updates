@@ -6,7 +6,6 @@ import {selectProductAction, addToWishlist, removeFromWishList} from "../../../u
 import { MdAddShoppingCart, MdShoppingCart } from "react-icons/md";
 
 import "./ProductCard.css";
-import { display } from "@mui/system";
 
 const ProductCard =({product})=>{
     const navigate = useNavigate();

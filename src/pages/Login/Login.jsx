@@ -33,31 +33,28 @@ const Login= ()=>{
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const logIn = (values)=>{
-      getToken(values)
+      logInUser(values)
       
     }
-    async function getToken(values){
-      // specific payload to return a token from the dake reqres api
-      let tokenPayload ={
-        "email": "eve.holt@reqres.in",
-        "password": "cityslicka"
-      }
-      let response = await axios.post("https://reqres.in/api/login", tokenPayload)
-       //get token from response
-      const token = response.data.token
+    async function logInUser(values){
+      
       //  store token in the global state
 
       // Check user have an account 
-      axios.get('https://api.escuelajs.co/api/v1/users').then((res)=>{
+      await axios.get('https://api.escuelajs.co/api/v1/users').then((res)=>{
         let user = res.data && res.data.filter((el)=>el.email === values.email)
         if(user.length){
+          
           if(user[0].password === values.password){
-            let loginActionPayload = {
-                loginToken:token,
+            axios.post("https://api.escuelajs.co/api/v1/auth/login", values, {"content-type":"application/json"}).then(
+            (res)=>{
+              let loginActionPayload = {
+                loginToken:res.data.access_token,
                 values : user[0]
-            }
-            delete loginActionPayload.values.password;
-            dispatch(loginAction(loginActionPayload));
+              }
+              delete loginActionPayload.values.password;
+              dispatch(loginAction(loginActionPayload));
+            }).catch(err=>{console.log(err.message);})
             navigate("/")
           }else {
             setApiValid(false)

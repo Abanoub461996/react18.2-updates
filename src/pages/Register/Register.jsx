@@ -5,7 +5,7 @@ import axios from 'axios';
 import { useDispatch } from "react-redux";
 import {registerAction} from "../../utils/redux";
 import { useNavigate } from "react-router-dom";
-
+// API
 
 const Register= ()=>{
   const formik =useFormik({
@@ -38,16 +38,8 @@ const Register= ()=>{
     })
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    async function getToken(values){
+    async function register(values){
       // specific payload to return a token from the dake reqres api
-      let tokenPayload ={
-        "email": "eve.holt@reqres.in",
-        "password": "cityslicka"
-      }
-      let response = await axios.post("https://reqres.in/api/login", tokenPayload)
-       //get token from response from a random api that generates token
-       const token = response.data.token
-
        // check if user is already registered 
        const apiReqBody = Object.assign({}, {...values,role: "customer",
        avatar: "https://api.lorem.space/image/face?w=640&h=480&r=9627",});
@@ -56,27 +48,31 @@ const Register= ()=>{
         axios.get('https://api.escuelajs.co/api/v1/users').then((res)=>{
           userExists = res.data.some((el)=>{
             return el.email === apiReqBody.email})
-            console.log("after the loop",userExists);
-
             //  Add the new user to the users collection
-            const options = {
-              headers: {
-                  'Content-Type': 'application/json',
-              }
-            }
             if(!userExists){
-              console.log(JSON.stringify(apiReqBody, options));
-              axios.post('https://api.escuelajs.co/api/v1/users',apiReqBody)
-              .then((res)=>{
-                let regActionPayload = {
-                  loginToken:token,
-                  values : res.data
-                }
-                delete regActionPayload.values.password;
-
-                 dispatch(registerAction(regActionPayload))
-              })
-              .catch(err=>{console.log(err.response);})
+              // Register and post a new user to the API
+              let regDetails =Object.assign({role: "customer",
+              avatar: "https://api.lorem.space/image/face?w=640&h=480&r=9136"},values)
+              delete regDetails.confirmPass
+              axios.post("https://api.escuelajs.co/api/v1/users", regDetails).then(
+              )
+              // get token to the new user registered
+              let tokenPayload ={
+                "email": values.email,
+                "password": values.password
+              }
+              axios.post("https://api.escuelajs.co/api/v1/auth/login", tokenPayload, {"content-type":"application/json"}).then(
+                (res)=>{
+                  // Handle the global state register action 
+                  let regActionPayload = {
+                    values: regDetails,
+                    loginToken :res.data.access_token,
+                  }
+                  delete regActionPayload.values.password;
+                  dispatch(registerAction(regActionPayload));
+                })
+                .catch(err=>{console.log(err.message);})
+                navigate("/")
             }else{
               var userRes = window.confirm("you already have an Account, Do you want to sign in ?");
               if(userRes){
@@ -86,13 +82,7 @@ const Register= ()=>{
               }
             }
         })
-      
-      //  store token in the global state
-      
  };
-    const register = (values)=>{
-      getToken(values)
-    }
     return(<>
        <div className="Auth-form-container">
       <form className="Auth-form" onSubmit={formik.handleSubmit}>
