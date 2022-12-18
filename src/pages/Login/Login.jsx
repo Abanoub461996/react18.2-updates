@@ -54,6 +54,7 @@ const Login= ()=>{
               }
               delete loginActionPayload.values.password;
               dispatch(loginAction(loginActionPayload));
+              localStorage.setItem("token",res.data.access_token)
             }).catch(err=>{console.log(err.message);})
             navigate("/")
           }else {
@@ -63,7 +64,7 @@ const Login= ()=>{
         }else{
           var userRes = window.confirm("you don't have an Account, Do you want to create a new account ?");
                 if(userRes){
-                  navigate("/register")
+                  navigate("/user/register")
                 }else{
                   navigate("/")
                 }
@@ -112,7 +113,7 @@ const Login= ()=>{
             </div>
             <div className="text-center mt-2">
               Not registered yet?{" "}
-              <Link to="/register" className="link-primary">
+              <Link to="/user/register" className="link-primary">
                 Sign Up
               </Link>
             </div>

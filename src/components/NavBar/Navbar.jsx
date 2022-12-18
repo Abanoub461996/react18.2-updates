@@ -4,11 +4,15 @@ import { useSelector } from "react-redux";
 // ICONS
 import { FaOpencart } from "react-icons/fa";
 import './Navbar.css'
+import { useEffect, useState } from "react";
 
 function NavbarComponent() { 
-  let {user,wishList} = useSelector((state)=>state)
+  let {user, wishList} = useSelector((state)=>state)
+  const [token, setToken] = useState(localStorage.getItem("token"));
+  useEffect(()=>{setToken(localStorage.getItem("token"))})
   const handleLogout =()=>{
 console.log("ay haga ");
+localStorage.removeItem("token")
   }
   
 	return (
@@ -31,13 +35,13 @@ console.log("ay haga ");
           </Link>
         </li>
       </ul>
-      {!(user?.loginToken)?
+      {!(token)?
       <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
         <li className="nav-item">
-          <Link className="nav-link" to="/login">login</Link>
+          <Link className="nav-link" to="/user/login">login</Link>
         </li>
         <li className="nav-item">
-          <Link className="nav-link" to="/register">register</Link>
+          <Link className="nav-link" to="/user/register">register</Link>
         </li>
       </ul>
       :

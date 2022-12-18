@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import {store} from "./utils/redux"
 import { Provider } from 'react-redux';
-import {createBrowserRouter,createRoutesFromElements,Route,RouterProvider} from "react-router-dom";
+import {createBrowserRouter,createRoutesFromElements,Route,RouterProvider, Outlet} from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
 import './index.css';
@@ -23,6 +23,21 @@ import ErrorPage from './components/ErrorPage';
 // PRIVATE COMPONENTS
 import PrivateLayout from './components/PrivateLayout';
 import Cart from './pages/Cart/Cart';
+
+function tokenLoader(){
+  if(localStorage.getItem("token")){
+  return localStorage.getItem("token")
+  }else{
+    throw new Response("Not Found", { status: 404 });
+  }
+}
+function noLoginToken(){
+  if(!localStorage.getItem("token")){
+    return "public user"
+    }else{
+      throw new Response("Not Found", { status: 404 });
+    }
+}
 const router = createBrowserRouter(createRoutesFromElements(
         <Route path="/" element={<RootLayout/>} >
           <Route index="true" element ={<Products/>} id="root" loader={getProducts}  errorElement={<ErrorLoading />} />
@@ -30,9 +45,12 @@ const router = createBrowserRouter(createRoutesFromElements(
             <Route index="true" element ={<Products/>} />
             <Route path=":id" element ={<ProductDetails/>} />
           </Route>
-          <Route path="/login" element ={<Login/>} />
-          <Route path="/register" element ={<Register/>} />
-          <Route path="/cart" element={<PrivateLayout/>}>
+          <Route path="/user" element={<ProductLayout/>} loader={noLoginToken} id="public" errorElement={<ErrorPage/>}>
+            <Route index="true" element ={<Products/>} />
+            <Route path="/user/login" element ={<Login/>} />
+            <Route path="/user/register" element ={<Register/>} />
+          </Route>
+          <Route path="/cart" element={<PrivateLayout/>} loader={tokenLoader} id="private" errorElement={<ErrorPage/>}>
             <Route index element={<Cart/>} />
           </Route>
           <Route path="*" element={<ErrorPage/>} />

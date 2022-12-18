@@ -70,13 +70,14 @@ const Register= ()=>{
                   }
                   delete regActionPayload.values.password;
                   dispatch(registerAction(regActionPayload));
+                  localStorage.setItem("token",res.data.access_token)
                 })
                 .catch(err=>{console.log(err.message);})
                 navigate("/")
             }else{
               var userRes = window.confirm("you already have an Account, Do you want to sign in ?");
               if(userRes){
-                navigate("/login")
+                navigate("/user/login")
               }else{
                 navigate("/")
               }
@@ -149,7 +150,7 @@ const Register= ()=>{
           </div>
           <div className="text-center mt-2">
             Already registered?{" "}
-            <Link to="/login"  className="link-primary">
+            <Link to="/user/login"  className="link-primary">
               Sign In
             </Link>
           </div>
