@@ -27,8 +27,8 @@ const ProductCard =({product})=>{
     }
     return (
         <>
-        <div className="col-3">
-        <div className="card h-100 m-1 item-card">
+        <div className="col">
+        <div className="card h-100 m-1 item-card" onClick ={goToDetails}>
             <img src={product.images.length ? product.images[0]: "https://api.lorem.space/image/watch?w=640&h=480&r=5623"} loading="lazy" className="card-img-top mx-auto p-3" alt="product" style={{maxHeight: "400px", width:"fit-content", maxWidth:"100%"}}/>
             <div className="card-body">
                 <div className="card-header">

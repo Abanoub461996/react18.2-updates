@@ -28,7 +28,7 @@ const Products =()=>{
             Hi {user?.userProfile.name.split(" ")[0]}! let's start shopping our best selling items
         </div>}
         {products.length ? 
-        <><div className="prods_container row row-cols-1 row-cols-md-3 g-4 mx-4" style={{ maxWidth: '1440px!important',
+        <><div className="prods_container row row-cols-xs-1 row-cols-sm-2 row-cols-md-3 g-4 mx-4" style={{ maxWidth: '1440px!important',
             margin: '0 auto !important'}}>
                 {currentProds?.map((element) => {
                     return <ProductCard product={element} key={element.id} />;
